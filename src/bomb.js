@@ -1,8 +1,10 @@
-import MovingObject from "./moving_object";
+import Airship from "./airship";
 
-class Bomb extends MovingObject {
+class Bomb extends Airship {
   constructor(props) {
     super(props);
+
+    this.ship = props.ship;
   }
 
 

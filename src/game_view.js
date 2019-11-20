@@ -58,20 +58,9 @@ class GameView {
   };
 
   animate(time) {
-    // const timeDelta = time - this.lastTime;
-    // console.log(time);
-    // console.log(timeDelta);
-    // this.game.step(timeDelta);
-    // this.ships.forEach(
-    //   ship => {
-    //     ship.move();
-    //   }
-    // );
     this.game.draw(this.ctx);
-    this.cloud.move(this.ctx);
+    this.cloud.move();
     this.lastTime = time;
-    
-    // every call to animate requests causes another call to animate
     requestAnimationFrame(this.animate.bind(this));
   };
 }

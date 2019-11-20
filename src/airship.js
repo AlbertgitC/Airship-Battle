@@ -5,12 +5,13 @@ class Airship extends MovingObject {
     super(props);
     
     this.name = props.name;
-    this.frameCount = 3;
+    this.curFrameCount = 0;
+    this.spriteFrameCount = 8;
     this.curFrame = 0;
     this.sprite_x_start = props.sprite_x_start;
-    this.ship_sprite_y = 0;
+    this.sprite_y_start = props.sprite_y_start;
     this.ship_image = new Image();
-    this.ship_image.src = "../src/assets/Shooter_SpriteSheet.png";
+    this.ship_image.src = "../src/assets/ships.png";
     this.aim_pos = 0;
     this.aim_mode = false;
     this.facing = props.facing;
@@ -22,20 +23,32 @@ class Airship extends MovingObject {
   // };
 
   draw(ctx) {
-    const width = 17;
-    const height = 17;
+    this.curFrameCount++;
+    const width = 22;
+    const height = 22;
 
     let ship_sprite_x;
-
-    this.curFrame = ++this.curFrame % this.frameCount;
+    let ship_sprite_y;
+    if (this.curFrameCount > 8) {
+      this.curFrame = ++this.curFrame % this.spriteFrameCount;
+      this.curFrameCount = 0;
+    }
     ship_sprite_x = this.curFrame * width + this.sprite_x_start;
+    
     if (this.aim_mode) {
       this.drawAim(ctx);
     }
+
+    if (this.facing === "left") {
+      ship_sprite_y = this.sprite_y_start + 20;
+    } else {
+      ship_sprite_y = this.sprite_y_start;
+    }
+
     ctx.drawImage(
       this.ship_image, 
       ship_sprite_x, 
-      this.ship_sprite_y, 
+      ship_sprite_y, 
       width, 
       height, 
       this.pos[0], 
@@ -43,7 +56,6 @@ class Airship extends MovingObject {
       100, 
       100
     );
-    
   }
 
   drawAim(ctx) {

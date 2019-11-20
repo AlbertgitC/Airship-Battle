@@ -30,6 +30,7 @@ class Game {
       pos: [100, 200],
       game: this,
       sprite_x_start: 0,
+      sprite_y_start: 0,
       facing: "right"
     });
 
@@ -37,7 +38,8 @@ class Game {
       name: "ship2",
       pos: [900, 200],
       game: this,
-      sprite_x_start: 51,
+      sprite_x_start: 0,
+      sprite_y_start: 45,
       facing: "left"
     });
 
@@ -56,9 +58,6 @@ class Game {
   }
 
   draw(ctx) {
-    // const sky = new Image();
-    // sky.src = "../src/assets/background/sky.png";
-    // this.cloud = new Cloud({pos: [0, 210], x_vel: 1, game: this});
     ctx.clearRect(0, 0, 1870, 720);
     ctx.drawImage(this.sky, 0, 0, 112, 304, 0, 0, 1870, 720);
     this.cloud.draw(ctx);
