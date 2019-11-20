@@ -22,9 +22,7 @@ class MovingObject {
     // const velocityScale = timeDelta / NORMAL_FRAME_TIME_DELTA,
     //   offsetX = this.vel[0] * velocityScale,
     //   offsetY = this.vel[1] * velocityScale;
-    if (move) {
-      this.pos = [this.pos[0] + move[0], this.pos[1] + move[1]];
-    }
+    this.pos = [this.pos[0] + move[0], this.pos[1] + move[1]];
   };
   
 }

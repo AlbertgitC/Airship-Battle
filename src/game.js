@@ -29,14 +29,16 @@ class Game {
       name: "ship1",
       pos: [100, 200],
       game: this,
-      sprite_x_start: 0
+      sprite_x_start: 0,
+      facing: "right"
     });
 
     const ship2 = new Airship({
       name: "ship2",
       pos: [900, 200],
       game: this,
-      sprite_x_start: 51
+      sprite_x_start: 51,
+      facing: "left"
     });
 
     this.add(ship1);

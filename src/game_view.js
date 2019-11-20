@@ -6,24 +6,45 @@ class GameView {
     this.selected_ship = this.ships[0];
   }
 
-  bindKeyHandlers() {
-    const MOVES = {
-      w: [0, -4],
-      a: [-4, 0],
-      s: [0, 4],
-      d: [4, 0],
-    };
-
-    Object.keys(MOVES).forEach(k => {
-      const move = MOVES[k];
-      key(k, () => { this.selected_ship.move(move); });
+  moveMode() {
+    key.unbind("w, s");
+    key("w", () => { this.selected_ship.move([0, -4]); });
+    key("a", () => { 
+      this.selected_ship.move([-4, 0]);
+      this.selected_ship.facing = "left";
     });
+    key("s", () => { this.selected_ship.move([0, 4]); });
+    key("d", () => { 
+      this.selected_ship.move([4, 0]);
+      this.selected_ship.facing = "right"; 
+    });
+  }
+
+  aimMode() {
+    key.unbind("a, w, s, d");
+    key("w", () => { this.selected_ship.aim(2); });
+    key("s", () => { this.selected_ship.aim(-2); });
+  }
+
+  bindKeyHandlers() {
+    this.moveMode();
 
     key("space", () => {
       if (this.selected_ship.name === "ship1") {
         this.selected_ship = this.ships[1];
       } else if (this.selected_ship.name === "ship2") {
         this.selected_ship = this.ships[0];
+      }
+    });
+
+    key("r", () => {
+      if (!this.selected_ship.aim_mode) {
+        this.selected_ship.aim_mode = true;
+        this.aimMode();
+      } else {
+        this.selected_ship.aim_mode = false;
+        this.moveMode();
+        this.selected_ship.aim_pos = 0;
       }
     });
   };
@@ -41,11 +62,11 @@ class GameView {
     // console.log(time);
     // console.log(timeDelta);
     // this.game.step(timeDelta);
-    this.ships.forEach(
-      ship => {
-        ship.move();
-      }
-    );
+    // this.ships.forEach(
+    //   ship => {
+    //     ship.move();
+    //   }
+    // );
     this.game.draw(this.ctx);
     this.cloud.move(this.ctx);
     this.lastTime = time;
