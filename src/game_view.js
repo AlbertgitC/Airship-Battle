@@ -44,8 +44,12 @@ class GameView {
       } else {
         this.selected_ship.aim_mode = false;
         this.moveMode();
-        this.selected_ship.aim_pos = 0;
+        this.selected_ship.aim_angle = 0;
       }
+    });
+
+    key("e", () => {
+      this.selected_ship.fire();
     });
   };
 
