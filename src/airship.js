@@ -9,6 +9,7 @@ class Airship extends MovingObject {
     this.curFrameCount = 0;
     this.spriteFrameCount = 8;
     this.curFrame = 0;
+    this.game = props.game;
     this.sprite_x_start = props.sprite_x_start;
     this.sprite_y_start = props.sprite_y_start;
     this.ship_image = new Image();
@@ -17,6 +18,7 @@ class Airship extends MovingObject {
     this.aim_mode = false;
     this.facing = props.facing;
     this.bomb_path = null;
+    this.center_pos = [this.pos[0] + 50, this.pos[1] + 50];
   }
 
   draw(ctx) {
@@ -40,10 +42,10 @@ class Airship extends MovingObject {
     //   this.drawPath(ctx);;
     // }
 
-    if (this.bomb) {
-      this.bomb.draw(ctx);;
-      this.bomb.move();
-    }
+    // if (this.bomb) {
+    //   this.bomb.draw(ctx);;
+    //   this.bomb.move();
+    // }
 
     if (this.facing === "left") {
       ship_sprite_y = this.sprite_y_start + 23;
@@ -62,6 +64,8 @@ class Airship extends MovingObject {
       100, 
       100
     );
+
+    this.drawHitBox(ctx);
   }
 
   drawAim(ctx) {
@@ -71,7 +75,7 @@ class Airship extends MovingObject {
       ctx.strokeStyle = 'orange';
       const delta_y = 100 * Math.sin(this.aim_angle * Math.PI / 180);
       const delta_x = Math.sqrt(10000 - Math.pow(delta_y, 2));
-      ctx.moveTo(this.pos[0] + 50, this.pos[1] + 50);
+      ctx.moveTo(this.center_pos[0], this.center_pos[1]);
       ctx.lineTo(this.pos[0] + 50 + delta_x, this.pos[1] + 50 - delta_y);
       ctx.stroke();
     } else if (this.facing === "left") {
@@ -80,7 +84,7 @@ class Airship extends MovingObject {
       ctx.strokeStyle = 'orange';
       const delta_y = 100 * Math.sin(this.aim_angle * Math.PI / 180);
       const delta_x = Math.sqrt(10000 - Math.pow(delta_y, 2));
-      ctx.moveTo(this.pos[0] + 50, this.pos[1] + 50);
+      ctx.moveTo(this.center_pos[0], this.center_pos[1]);
       ctx.lineTo(this.pos[0] + 50 - delta_x, this.pos[1] + 50 - delta_y);
       ctx.stroke();
     }
@@ -104,6 +108,14 @@ class Airship extends MovingObject {
       ctx.arc(bomb_pos[0], bomb_pos[1], 1, 0, 2 * Math.PI);
       ctx.fill();
     });
+  }
+
+  drawHitBox(ctx) {
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'black';
+    ctx.beginPath();
+    ctx.arc(this.center_pos[0], this.center_pos[1], 38, 0, 2 * Math.PI);
+    ctx.stroke();
   }
 
   fire() {
@@ -142,6 +154,8 @@ class Airship extends MovingObject {
       ship: this,
       bomb_path: this.bomb_path
     });
+
+    this.game.addBomb(this.bomb);
     // const norm = Util.norm(this.vel);
 
     // const relVel = Util.scale(

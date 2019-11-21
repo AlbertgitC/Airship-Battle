@@ -12,6 +12,7 @@ class Bomb {
     this.ship = props.ship;
     this.bomb_path = props.bomb_path;
     this.step = 0;
+    this.center_pos = [this.pos[0] + 10, this.pos[1] + 10];
   }
 
   draw(ctx) {
@@ -35,23 +36,21 @@ class Bomb {
 
     if (this.bomb_path[this.step]) {
       for (let i = 0; i <= this.step; i++) {
-        ctx.beginPath();
         ctx.moveTo(this.bomb_path[i][0], this.bomb_path[i][1]);
+        ctx.beginPath();
         ctx.fillStyle = "brown";
         ctx.arc(this.bomb_path[i][0], this.bomb_path[i][1], 1, 0, 2 * Math.PI);
         ctx.fill();
       }
     } else {
       this.bomb_path.forEach(bomb_pos => {
-        ctx.beginPath();
         ctx.moveTo(bomb_pos[0], bomb_pos[1]);
+        ctx.beginPath();
         ctx.fillStyle = "brown";
         ctx.arc(bomb_pos[0], bomb_pos[1], 1, 0, 2 * Math.PI);
         ctx.fill();
       });
     }
-    
-    
 
     ctx.drawImage(
       this.bomb_image,
@@ -64,13 +63,29 @@ class Bomb {
       width,
       height
     );
+
+    this.drawHitBox(ctx);
+    this.move();
   }
 
   move() {
-    this.step++;
-    if (this.bomb_path[this.step]) {
+    if (this.bomb_path[this.step] && !this.game.exitingVerBounds(this.bomb_path[this.step])) {
       this.pos = this.bomb_path[this.step];
+      this.center_pos = [this.pos[0] + 10, this.pos[1] + 10];
+      this.step++;
+    } else if (this.game.exitingVerBounds(this.bomb_path[this.step])) {
+      console.log("out");
+      this.game.remove(this);
+      console.log(this.game.bomb);
     }
+  }
+
+  drawHitBox(ctx) {
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'black';
+    ctx.beginPath();
+    ctx.arc(this.pos[0] + 10, this.pos[1] + 10, 5, 0, 2 * Math.PI);
+    ctx.stroke();
   }
   
 }

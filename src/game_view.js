@@ -53,6 +53,30 @@ class GameView {
     });
   };
 
+  checkBombHit() {
+    if (this.game.bomb.length > 0) {
+      let target_ship;
+
+      if (this.selected_ship.name === "ship1") {
+        target_ship = this.ships[1];
+      } else {
+        target_ship = this.ships[0];
+      }
+
+      const pos1 = this.selected_ship.bomb.center_pos;
+      const pos2 = target_ship.center_pos;
+
+      const dist = Math.pow(Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2), 0.5);
+
+      if (dist <= 38 + 5) {
+        this.game.remove(this.selected_ship.bomb);
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
   start() {
     this.bindKeyHandlers();
     this.cloud = this.game.addBackground();
@@ -64,6 +88,7 @@ class GameView {
   animate(time) {
     this.game.draw(this.ctx);
     this.cloud.move();
+    this.checkBombHit();
     this.lastTime = time;
     requestAnimationFrame(this.animate.bind(this));
   };

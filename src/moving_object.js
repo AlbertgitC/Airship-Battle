@@ -23,6 +23,7 @@ class MovingObject {
     //   offsetX = this.vel[0] * velocityScale,
     //   offsetY = this.vel[1] * velocityScale;
     this.pos = [this.pos[0] + move[0], this.pos[1] + move[1]];
+    this.center_pos = [this.pos[0] + 50, this.pos[1] + 50];
   };
   
 }

@@ -1,18 +1,19 @@
 import Airship from "./airship";
 import Cloud from "./cloud";
+import Bomb from "./bomb";
 
 class Game {
   constructor() {
-    this.FPS = 32;
+    // this.FPS = 32;
     this.ships = [];
+    this.bomb = [];
   }
-  // this.addAsteroids();
 
   add(object) {
     if (object instanceof Airship) {
       this.ships.push(object);
-    // } else if (object instanceof Bullet) {
-    //   this.bullets.push(object);
+    } else if (object instanceof Bomb) {
+      this.bomb.push(object);
     // } else if (object instanceof Asteroid) {
     //   this.asteroids.push(object);
     } else {
@@ -21,7 +22,7 @@ class Game {
   };
 
   allObjects() {
-    return [].concat(this.ships);
+    return [].concat(this.ships, this.bomb);
   };
 
   addShips() {
@@ -49,6 +50,10 @@ class Game {
     return [ship1, ship2];
   };
 
+  addBomb(bomb) {
+    this.add(bomb);
+  }
+
   addBackground() {
     this.sky = new Image();
     this.sky.src = "../src/assets/background/sky.png";
@@ -71,6 +76,10 @@ class Game {
       (pos[0] > 1870) || (pos[1] > 720);
   };
 
+  exitingVerBounds(pos) {
+    return (pos[0] < 0) || (pos[0] > 1870);
+  };
+
   exitedBounds(pos, width, height) {
     return (pos[0] < - width) || (pos[1] < - height) ||
       (pos[0] > 1870) || (pos[1] > 720);
@@ -89,10 +98,17 @@ class Game {
     return [wrap_x, pos[1]];
   };
 
-  // step(delta) {
-  //   this.moveObjects(delta);
-  //   this.checkCollisions();
-  // };
+  remove(object) {
+    if (object instanceof Bomb) {
+      this.bomb.splice(this.bomb.indexOf(object), 1);
+    // } else if (object instanceof Asteroid) {
+    //   this.asteroids.splice(this.asteroids.indexOf(object), 1);
+    // } else if (object instanceof Ship) {
+    //   this.ships.splice(this.ships.indexOf(object), 1);
+    } else {
+      throw new Error("unknown type of object");
+    }
+  };
 }
 
 
