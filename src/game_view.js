@@ -32,8 +32,12 @@ class GameView {
     key("space", () => {
       if (this.selected_ship.name === "ship1") {
         this.selected_ship = this.ships[1];
+        this.selected_ship.selected = true;
+        this.ships[0].selected = false;
       } else if (this.selected_ship.name === "ship2") {
         this.selected_ship = this.ships[0];
+        this.selected_ship.selected = true;
+        this.ships[1].selected = false;
       }
     });
 
@@ -65,11 +69,20 @@ class GameView {
 
       const pos1 = this.selected_ship.bomb.center_pos;
       const pos2 = target_ship.center_pos;
+      const pos3 = this.game.rocks[0].pos;
 
-      const dist = Math.pow(Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2), 0.5);
+      const ship_dist = Math.pow(Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2), 0.5);
+      const rock_dist = Math.pow(Math.pow(pos1[0] - pos3[0], 2) + Math.pow(pos1[1] - pos3[1], 2), 0.5);
 
-      if (dist <= 38 + 5) {
+      if (ship_dist <= 5 + 38) {
         this.game.remove(this.selected_ship.bomb);
+        this.game.addExplosion(this.selected_ship.bomb.center_pos);
+        this.selected_ship.bomb = null;
+        return true;
+      } else if (rock_dist <= 5 + 135) {
+        this.game.remove(this.selected_ship.bomb);
+        this.game.addExplosion(this.selected_ship.bomb.center_pos);
+        this.selected_ship.bomb = null;
         return true;
       }
       return false;

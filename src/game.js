@@ -1,12 +1,16 @@
 import Airship from "./airship";
 import Cloud from "./cloud";
 import Bomb from "./bomb";
+import Rock from "./rock";
+import Explosion from "./explosion";
 
 class Game {
   constructor() {
     // this.FPS = 32;
     this.ships = [];
     this.bomb = [];
+    this.rocks = [];
+    this.explosion = [];
   }
 
   add(object) {
@@ -14,34 +18,38 @@ class Game {
       this.ships.push(object);
     } else if (object instanceof Bomb) {
       this.bomb.push(object);
-    // } else if (object instanceof Asteroid) {
-    //   this.asteroids.push(object);
+    } else if (object instanceof Rock) {
+      this.rocks.push(object);
+    } else if (object instanceof Explosion) {
+      this.explosion.push(object);
     } else {
       throw new Error("unknown type of object");
     }
   };
 
   allObjects() {
-    return [].concat(this.ships, this.bomb);
+    return [].concat(this.rocks, this.ships, this.bomb, this.explosion);
   };
 
   addShips() {
     const ship1 = new Airship({
       name: "ship1",
-      pos: [100, 200],
+      pos: [100, 360],
       game: this,
       sprite_x_start: 0,
       sprite_y_start: 0,
-      facing: "right"
+      facing: "right",
+      selected: true
     });
 
     const ship2 = new Airship({
       name: "ship2",
-      pos: [900, 200],
+      pos: [1670, 360],
       game: this,
       sprite_x_start: 0,
       sprite_y_start: 45,
-      facing: "left"
+      facing: "left",
+      selected: false
     });
 
     this.add(ship1);
@@ -54,9 +62,30 @@ class Game {
     this.add(bomb);
   }
 
+  addRocks() {
+    const big_rock = new Rock({
+      sprite_x_start: 0,
+      pos: [935, 400],
+      game: this
+    });
+
+    this.add(big_rock);
+  }
+
+  addExplosion(pos) {
+    const new_explosion = new Explosion({
+      pos: pos,
+      game: this
+    });
+
+    this.add(new_explosion);
+  }
+
   addBackground() {
     this.sky = new Image();
     this.sky.src = "../src/assets/background/sky.png";
+
+    this.addRocks(); 
 
     this.cloud = new Cloud({ pos: [0, 210], x_vel: 1, game: this });
     return this.cloud;
@@ -101,8 +130,8 @@ class Game {
   remove(object) {
     if (object instanceof Bomb) {
       this.bomb.splice(this.bomb.indexOf(object), 1);
-    // } else if (object instanceof Asteroid) {
-    //   this.asteroids.splice(this.asteroids.indexOf(object), 1);
+    } else if (object instanceof Explosion) {
+      this.explosion.splice(this.explosion.indexOf(object), 1);
     // } else if (object instanceof Ship) {
     //   this.ships.splice(this.ships.indexOf(object), 1);
     } else {

@@ -19,6 +19,7 @@ class Airship extends MovingObject {
     this.facing = props.facing;
     this.bomb_path = null;
     this.center_pos = [this.pos[0] + 50, this.pos[1] + 50];
+    this.selected = props.selected;
   }
 
   draw(ctx) {
@@ -38,9 +39,9 @@ class Airship extends MovingObject {
       this.drawAim(ctx);
     }
 
-    // if (this.bomb_path) {
-    //   this.drawPath(ctx);;
-    // }
+    if (!this.bomb && this.bomb_path && this.selected) {
+      this.drawPath(ctx);;
+    }
 
     // if (this.bomb) {
     //   this.bomb.draw(ctx);;
@@ -65,7 +66,7 @@ class Airship extends MovingObject {
       100
     );
 
-    this.drawHitBox(ctx);
+    // this.drawHitBox(ctx);
   }
 
   drawAim(ctx) {
@@ -124,10 +125,10 @@ class Airship extends MovingObject {
     let counter = 0;
     let x;
     let y;
-    const increase = this.aim_angle / 180 * Math.PI / 20;
+    const increase = this.aim_angle / 180 * Math.PI / 40;
 
     if (this.facing === "right") {
-      for (let i = 0; i <= 2160; i += 10) {
+      for (let i = 0; i <= 2160; i += 5) {
 
         x = this.pos[0] + 50 + i;
 
@@ -137,7 +138,7 @@ class Airship extends MovingObject {
         this.bomb_path.push([x, y]);
       }
     } else {
-      for (let i = 0; i <= 2160; i += 10) {
+      for (let i = 0; i <= 2160; i += 5) {
 
         x = this.pos[0] + 50 - i;
 

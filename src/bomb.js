@@ -64,7 +64,7 @@ class Bomb {
       height
     );
 
-    this.drawHitBox(ctx);
+    // this.drawHitBox(ctx);
     this.move();
   }
 
@@ -74,9 +74,8 @@ class Bomb {
       this.center_pos = [this.pos[0] + 10, this.pos[1] + 10];
       this.step++;
     } else if (this.game.exitingVerBounds(this.bomb_path[this.step])) {
-      console.log("out");
       this.game.remove(this);
-      console.log(this.game.bomb);
+      this.ship.bomb = null;
     }
   }
 
@@ -87,7 +86,6 @@ class Bomb {
     ctx.arc(this.pos[0] + 10, this.pos[1] + 10, 5, 0, 2 * Math.PI);
     ctx.stroke();
   }
-  
 }
 
 
