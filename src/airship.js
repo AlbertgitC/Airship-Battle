@@ -1,11 +1,9 @@
-import MovingObject from "./moving_object";
 import Bomb from "./bomb";
 
-class Airship extends MovingObject {
+class Airship {
   constructor(props) {
-    super(props);
-    
     this.name = props.name;
+    this.pos = props.pos;
     this.curFrameCount = 0;
     this.spriteFrameCount = 8;
     this.curFrame = 0;
@@ -42,11 +40,6 @@ class Airship extends MovingObject {
     if (!this.bomb && this.bomb_path && this.selected) {
       this.drawPath(ctx);;
     }
-
-    // if (this.bomb) {
-    //   this.bomb.draw(ctx);;
-    //   this.bomb.move();
-    // }
 
     if (this.facing === "left") {
       ship_sprite_y = this.sprite_y_start + 23;
@@ -157,25 +150,40 @@ class Airship extends MovingObject {
     });
 
     this.game.addBomb(this.bomb);
-    // const norm = Util.norm(this.vel);
+  };
 
-    // const relVel = Util.scale(
-    //   Util.dir(this.vel),
-    //   Bullet.SPEED
-    // );
+  move(move) {
+    this.pos = [this.pos[0] + move[0], this.pos[1] + move[1]];
+    this.center_pos = [this.pos[0] + 50, this.pos[1] + 50];
+    if (this.game.exitingBounds(this.center_pos)) {
+      if (this.center_pos[0] < 0) {
+        this.pos = [this.pos[0] + 4, this.pos[1]];
+      } else if (this.center_pos[1] < 0) {
+        this.pos = [this.pos[0], this.pos[1] + 4];
+      } else if (this.center_pos[0] > 1870) {
+        this.pos = [this.pos[0] - 4, this.pos[1]];
+      } else if (this.center_pos[1] > 720) {
+        this.pos = [this.pos[0], this.pos[1] - 4];
+      }
+    }
 
-    // const bulletVel = [
-    //   relVel[0] + this.vel[0], relVel[1] + this.vel[1]
-    // ];
-
-    // const bullet = new Bullet({
-    //   pos: this.pos,
-    //   vel: bulletVel,
-    //   color: this.color,
-    //   game: this.game
-    // });
-
-    // this.game.add(bullet);
+    const pos1 = this.center_pos;
+    
+    this.game.rocks.forEach(rock => {
+      const pos3 = rock.pos;
+      const rock_dist = Math.pow(Math.pow(pos1[0] - pos3[0], 2) + Math.pow(pos1[1] - pos3[1], 2), 0.5);
+      if (rock_dist <= 38 + rock.radius) {
+        if (this.center_pos[0] < pos3[0] && this.center_pos[1] <= pos3[1]) {
+          this.pos = [this.pos[0], this.pos[1] - 4];
+        } else if (this.center_pos[0] >= pos3[0] && this.center_pos[1] < pos3[1]) {
+          this.pos = [this.pos[0], this.pos[1] - 4];
+        } else if (this.center_pos[0] > pos3[0] && this.center_pos[1] >= pos3[1]) {
+          this.pos = [this.pos[0], this.pos[1] + 4];
+        } else if (this.center_pos[0] <= pos3[0] && this.center_pos[1] > pos3[1]) {
+          this.pos = [this.pos[0], this.pos[1] + 4];
+        }
+      }
+    });
   };
 }
 

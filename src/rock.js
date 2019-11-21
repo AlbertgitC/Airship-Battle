@@ -9,6 +9,9 @@ class Rock {
     this.rock_image.src = "../src/assets/rocks.png";
     this.pos = props.pos;
     this.game = props.game;
+    this.radius = props.radius;
+    this.resize = props.resize;
+    this.removable = props.removable;
   }
 
   draw(ctx) {
@@ -29,20 +32,20 @@ class Rock {
       this.sprite_y_start,
       width,
       height,
-      this.pos[0] - 200,
-      this.pos[1] - 200,
-      400,
-      400
+      this.pos[0] - this.resize[0] / 2,
+      this.pos[1] - this.resize[1] / 2,
+      this.resize[0],
+      this.resize[1]
     );
 
-    this.drawHitBox(ctx);
+    // this.drawHitBox(ctx);
   }
 
   drawHitBox(ctx) {
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'black';
     ctx.beginPath();
-    ctx.arc(this.pos[0], this.pos[1], 135, 0, 2 * Math.PI);
+    ctx.arc(this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI);
     ctx.stroke();
   }
 

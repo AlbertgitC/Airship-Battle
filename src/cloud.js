@@ -1,8 +1,8 @@
-import MovingObject from "./moving_object";
-
-class Cloud extends MovingObject {
+class Cloud {
   constructor(props) {
-    super(props);
+    this.pos = props.pos;
+    this.game = props.game;
+    this.x_vel = props.x_vel;
     this.cloud_img = new Image();
     this.cloud_img.src = "../src/assets/background/clouds.png";
   }

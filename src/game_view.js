@@ -69,22 +69,32 @@ class GameView {
 
       const pos1 = this.selected_ship.bomb.center_pos;
       const pos2 = target_ship.center_pos;
-      const pos3 = this.game.rocks[0].pos;
+      
 
       const ship_dist = Math.pow(Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2), 0.5);
-      const rock_dist = Math.pow(Math.pow(pos1[0] - pos3[0], 2) + Math.pow(pos1[1] - pos3[1], 2), 0.5);
 
       if (ship_dist <= 5 + 38) {
         this.game.remove(this.selected_ship.bomb);
-        this.game.addExplosion(this.selected_ship.bomb.center_pos);
+        this.game.addExplosion(this.selected_ship.bomb);
         this.selected_ship.bomb = null;
         return true;
-      } else if (rock_dist <= 5 + 135) {
-        this.game.remove(this.selected_ship.bomb);
-        this.game.addExplosion(this.selected_ship.bomb.center_pos);
-        this.selected_ship.bomb = null;
-        return true;
-      }
+      } 
+      
+      this.game.rocks.forEach(rock => {
+        const pos3 = rock.pos;
+        const rock_dist = Math.pow(Math.pow(pos1[0] - pos3[0], 2) + Math.pow(pos1[1] - pos3[1], 2), 0.5);
+        if (rock_dist <= 5 + rock.radius) {
+          if (rock.removable) {
+            this.game.remove(rock);
+            this.game.addExplosion(rock);
+          }
+          this.game.remove(this.selected_ship.bomb);
+          this.game.addExplosion(this.selected_ship.bomb);
+          this.selected_ship.bomb = null;
+          return true;
+        }
+      });
+
       return false;
     }
     return false;

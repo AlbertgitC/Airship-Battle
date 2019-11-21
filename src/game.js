@@ -66,16 +66,80 @@ class Game {
     const big_rock = new Rock({
       sprite_x_start: 0,
       pos: [935, 400],
-      game: this
+      game: this,
+      radius: 135,
+      resize: [400, 400],
+      removable: false
+    });
+
+    const mid_rock1 = new Rock({
+      sprite_x_start: 121,
+      pos: [320, 300],
+      game: this,
+      radius: 46,
+      resize: [230, 230],
+      removable: true
+    });
+
+    const mid_rock2 = new Rock({
+      sprite_x_start: 121,
+      pos: [1550, 300],
+      game: this,
+      radius: 46,
+      resize: [230, 230],
+      removable: true
+    });
+
+    const sml_rock1 = new Rock({
+      sprite_x_start: 241,
+      pos: [510, 620],
+      game: this,
+      radius: 37,
+      resize: [230, 230],
+      removable: true
+    });
+
+    const sml_rock2 = new Rock({
+      sprite_x_start: 241,
+      pos: [680, 140],
+      game: this,
+      radius: 37,
+      resize: [230, 230],
+      removable: true
+    });
+
+    const sml_rock3 = new Rock({
+      sprite_x_start: 241,
+      pos: [1190, 140],
+      game: this,
+      radius: 37,
+      resize: [230, 230],
+      removable: true
+    });
+
+    const sml_rock4 = new Rock({
+      sprite_x_start: 241,
+      pos: [1360, 620],
+      game: this,
+      radius: 37,
+      resize: [230, 230],
+      removable: true
     });
 
     this.add(big_rock);
+    this.add(mid_rock1);
+    this.add(mid_rock2);
+    this.add(sml_rock1);
+    this.add(sml_rock2);
+    this.add(sml_rock3);
+    this.add(sml_rock4);
   }
 
-  addExplosion(pos) {
+  addExplosion(object) {
     const new_explosion = new Explosion({
-      pos: pos,
-      game: this
+      pos: object.center_pos || object.pos,
+      game: this,
+      object: object
     });
 
     this.add(new_explosion);
@@ -132,8 +196,8 @@ class Game {
       this.bomb.splice(this.bomb.indexOf(object), 1);
     } else if (object instanceof Explosion) {
       this.explosion.splice(this.explosion.indexOf(object), 1);
-    // } else if (object instanceof Ship) {
-    //   this.ships.splice(this.ships.indexOf(object), 1);
+    } else if (object instanceof Rock) {
+      this.rocks.splice(this.rocks.indexOf(object), 1);
     } else {
       throw new Error("unknown type of object");
     }
