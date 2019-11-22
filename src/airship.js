@@ -18,6 +18,8 @@ class Airship {
     this.bomb_path = null;
     this.center_pos = [this.pos[0] + 50, this.pos[1] + 50];
     this.selected = props.selected;
+    this.energy = 100;
+    this.hp = 3;
   }
 
   draw(ctx) {
@@ -113,6 +115,7 @@ class Airship {
   }
 
   fire() {
+    key.unbind("w, a, s, d, q, e, g, space");
     this.bomb_path = [];
 
     let counter = 0;
@@ -185,6 +188,20 @@ class Airship {
       }
     });
   };
+
+  spendEnergy() {
+    if(this.energy <= 0) {
+      key.unbind("w, a, s, d");
+      key("a", () => {
+        this.facing = "left";
+      });
+      key("d", () => {
+        this.facing = "right";
+      });
+    } else {
+      this.energy--;
+    }
+  }
 }
 
 export default Airship;

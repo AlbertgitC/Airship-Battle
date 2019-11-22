@@ -1,5 +1,6 @@
 import Bomb from "./bomb";
 import Rock from "./rock";
+import Airship from "./airship";
 
 class Explosion {
   constructor(props) {
@@ -29,6 +30,11 @@ class Explosion {
       height = 120;
       resize = [230, 230];
       this.explode_image.src = "../src/assets/rock_down.png";
+    } else if (this.object instanceof Airship) {
+      width = 64;
+      height = 64;
+      resize = [150, 150];
+      this.explode_image.src = "../src/assets/explode2.png";
     }
 
     let sprite_x;
@@ -37,7 +43,7 @@ class Explosion {
       this.curFrameCount = 0;
     }
     sprite_x = this.curFrame * width + this.sprite_x_start;
-    if (this.curFrame === this.spriteFrameCount - 1) {
+    if (!(this.object instanceof Airship) && this.curFrame === this.spriteFrameCount - 1) {
       this.game.remove(this);
     }
     ctx.drawImage(

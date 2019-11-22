@@ -7,52 +7,73 @@ class GameView {
   }
 
   moveMode() {
-    key.unbind("w, s");
-    key("w", () => { this.selected_ship.move([0, -4]); });
+    key("w", () => { 
+      this.selected_ship.move([0, -4]);
+      this.selected_ship.spendEnergy();
+      this.selected_ship.aim_mode = false;
+      this.selected_ship.aim_angle = 0;
+    });
     key("a", () => { 
       this.selected_ship.move([-4, 0]);
       this.selected_ship.facing = "left";
+      this.selected_ship.spendEnergy();
+      this.selected_ship.aim_mode = false;
+      this.selected_ship.aim_angle = 0;
     });
-    key("s", () => { this.selected_ship.move([0, 4]); });
+    key("s", () => { 
+      this.selected_ship.move([0, 4]);
+      this.selected_ship.spendEnergy();
+      this.selected_ship.aim_mode = false;
+      this.selected_ship.aim_angle = 0;
+    });
     key("d", () => { 
       this.selected_ship.move([4, 0]);
-      this.selected_ship.facing = "right"; 
+      this.selected_ship.facing = "right";
+      this.selected_ship.spendEnergy();
+      this.selected_ship.aim_mode = false;
+      this.selected_ship.aim_angle = 0; 
     });
   }
 
   aimMode() {
-    key.unbind("a, w, s, d");
-    key("w", () => { this.selected_ship.aim(2); });
-    key("s", () => { this.selected_ship.aim(-2); });
+    key("q", () => { 
+      this.selected_ship.aim(2);
+      this.selected_ship.aim_mode = true; 
+    });
+    key("e", () => { 
+      this.selected_ship.aim(-2);
+      this.selected_ship.aim_mode = true;
+    });
   }
 
   bindKeyHandlers() {
     this.moveMode();
+    this.aimMode();
 
-    key("space", () => {
+    key("g", () => {
+      key.unbind("w, a, s, d");
       if (this.selected_ship.name === "ship1") {
         this.selected_ship = this.ships[1];
         this.selected_ship.selected = true;
+        this.selected_ship.energy = 100;
         this.ships[0].selected = false;
+        this.ships[0].aim_mode = false;
+        this.selected_ship.aim_mode = false;
+        this.selected_ship.aim_angle = 0;
+        this.moveMode();
       } else if (this.selected_ship.name === "ship2") {
         this.selected_ship = this.ships[0];
         this.selected_ship.selected = true;
+        this.selected_ship.energy = 100;
         this.ships[1].selected = false;
-      }
-    });
-
-    key("r", () => {
-      if (!this.selected_ship.aim_mode) {
-        this.selected_ship.aim_mode = true;
-        this.aimMode();
-      } else {
+        this.ships[1].aim_mode = false;
         this.selected_ship.aim_mode = false;
-        this.moveMode();
         this.selected_ship.aim_angle = 0;
+        this.moveMode();
       }
     });
 
-    key("e", () => {
+    key("space", () => {
       this.selected_ship.fire();
     });
   };
@@ -77,6 +98,18 @@ class GameView {
         this.game.remove(this.selected_ship.bomb);
         this.game.addExplosion(this.selected_ship.bomb);
         this.selected_ship.bomb = null;
+        if (this.selected_ship.name === "ship1") {
+          this.ships[1].hp--;
+          if (this.ships[1].hp === 0) {
+            this.game.addExplosion(this.ships[1]);
+          }
+        } else if (this.selected_ship.name === "ship2") {
+          this.ships[0].hp--;
+          if (this.ships[0].hp === 0) {
+            this.game.addExplosion(this.ships[0]);
+          }
+        }
+        this.bindKeyHandlers();
         return true;
       } 
       
@@ -91,6 +124,7 @@ class GameView {
           this.game.remove(this.selected_ship.bomb);
           this.game.addExplosion(this.selected_ship.bomb);
           this.selected_ship.bomb = null;
+          this.bindKeyHandlers();
           return true;
         }
       });

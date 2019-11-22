@@ -11,6 +11,12 @@ class Game {
     this.bomb = [];
     this.rocks = [];
     this.explosion = [];
+    this.curFrameCount = 0;
+    this.curFrame = 0;
+    this.hp_bar_image = new Image();
+    this.hp_bar_image.src = "../src/assets/hp_bar.png";
+    this.current_ship_image = new Image();
+    this.current_ship_image.src = "../src/assets/current_player.png";
   }
 
   add(object) {
@@ -162,6 +168,8 @@ class Game {
     this.allObjects().forEach(object => {
       object.draw(ctx);
     });
+    this.drawStatus(ctx);
+    this.drawSelector(ctx)
   };
 
   exitingBounds(pos) {
@@ -194,6 +202,7 @@ class Game {
   remove(object) {
     if (object instanceof Bomb) {
       this.bomb.splice(this.bomb.indexOf(object), 1);
+      // this.bindKeyHandlers();
     } else if (object instanceof Explosion) {
       this.explosion.splice(this.explosion.indexOf(object), 1);
     } else if (object instanceof Rock) {
@@ -202,50 +211,108 @@ class Game {
       throw new Error("unknown type of object");
     }
   };
+
+  drawStatus(ctx) {
+    const width = 100;
+    const height = 100;
+
+    this.ships.forEach(ship => {
+      let hp_sprite_x;
+      let hp_sprite_y;
+      if (ship.hp === 3) {
+        hp_sprite_x = 0;
+      } else if (ship.hp === 2) {
+        hp_sprite_x = 101;
+      } else if (ship.hp === 1) {
+        hp_sprite_x = 201;
+      } else if (ship.hp === 0) {
+        hp_sprite_x = 301;
+      }
+
+      if (ship.energy === 100) {
+        hp_sprite_y = 0;
+      } else if (ship.energy < 100 && ship.energy >= 95) {
+        hp_sprite_y = 101;
+      } else if (ship.energy < 95 && ship.energy >= 85) {
+        hp_sprite_y = 201;
+      } else if (ship.energy < 85 && ship.energy >= 75) {
+        hp_sprite_y = 301;
+      } else if (ship.energy < 75 && ship.energy >= 65) {
+        hp_sprite_y = 401;
+      } else if (ship.energy < 65 && ship.energy >= 55) {
+        hp_sprite_y = 501;
+      } else if (ship.energy < 55 && ship.energy >= 45) {
+        hp_sprite_y = 601;
+      } else if (ship.energy < 45 && ship.energy >= 35) {
+        hp_sprite_y = 701;
+      } else if (ship.energy < 35 && ship.energy >= 25) {
+        hp_sprite_y = 801;
+      } else if (ship.energy < 25 && ship.energy >= 15) {
+        hp_sprite_y = 901;
+      } else if (ship.energy < 15 && ship.energy >= 5) {
+        hp_sprite_y = 1001;
+      } else if (ship.energy < 5 && ship.energy > 0) {
+        hp_sprite_y = 1101;
+      } else if (ship.energy === 0) {
+        hp_sprite_y = 1201;
+      }
+      
+      ctx.drawImage(
+        this.hp_bar_image,
+        hp_sprite_x,
+        hp_sprite_y,
+        width,
+        height,
+        ship.pos[0] - 20,
+        ship.pos[1] - 100,
+        150,
+        150
+      );
+    });
+  }
+
+  drawSelector(ctx) {
+    this.curFrameCount++;
+    const width = 40;
+    const height = 40;
+
+    let selector_sprite_x;
+    if (this.curFrameCount > 5) {
+      this.curFrame = ++this.curFrame % 4;
+      this.curFrameCount = 0;
+    }
+    selector_sprite_x = this.curFrame * width;
+
+    this.ships.forEach(ship => {
+      if (ship.selected) {
+        if (ship.name === "ship1") {
+          ctx.drawImage(
+            this.current_ship_image,
+            selector_sprite_x,
+            0,
+            width,
+            height,
+            ship.pos[0] + 30,
+            ship.pos[1] - 110,
+            50,
+            50
+          );
+        } else if (ship.name === "ship2") {
+          ctx.drawImage(
+            this.current_ship_image,
+            selector_sprite_x,
+            41,
+            width,
+            height,
+            ship.pos[0] + 30,
+            ship.pos[1] - 110,
+            50,
+            50,
+          );
+        }
+      }
+    });
+  }
 }
-
-
-
-// Game.prototype.checkCollisions = function checkCollisions() {
-//   const allObjects = this.allObjects();
-//   for (let i = 0; i < allObjects.length; i++) {
-//     for (let j = 0; j < allObjects.length; j++) {
-//       const obj1 = allObjects[i];
-//       const obj2 = allObjects[j];
-
-//       if (obj1.isCollidedWith(obj2)) {
-//         const collision = obj1.collideWith(obj2);
-//         if (collision) return;
-//       }
-//     }
-//   }
-// };
-
-
-// Game.prototype.moveObjects = function moveObjects(delta) {
-//   this.allObjects().forEach(function (object) {
-//     object.move(delta);
-//   });
-// };
-
-// Game.prototype.randomPosition = function randomPosition() {
-//   return [
-//     Game.DIM_X * Math.random(),
-//     Game.DIM_Y * Math.random()
-//   ];
-// };
-
-// Game.prototype.remove = function remove(object) {
-//   if (object instanceof Bullet) {
-//     this.bullets.splice(this.bullets.indexOf(object), 1);
-//   } else if (object instanceof Asteroid) {
-//     this.asteroids.splice(this.asteroids.indexOf(object), 1);
-//   } else if (object instanceof Ship) {
-//     this.ships.splice(this.ships.indexOf(object), 1);
-//   } else {
-//     throw new Error("unknown type of object");
-//   }
-// };
-
 
 export default Game;
