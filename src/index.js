@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("game-canvas");
   const ctx = canvas.getContext("2d");
   loadGame(ctx);
-  console.log("here!");
+  
   document.getElementById("start").onclick = () => {
     startGame(ctx);
     document.getElementById("start-menu").style.display = "none";
