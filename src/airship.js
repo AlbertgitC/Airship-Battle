@@ -20,6 +20,7 @@ class Airship {
     this.selected = props.selected;
     this.energy = 100;
     this.hp = 3;
+    this.fired = false;
   }
 
   draw(ctx) {
@@ -115,44 +116,47 @@ class Airship {
   }
 
   fire() {
-    key.unbind("w, a, s, d, q, e, g, space");
-    this.bomb_path = [];
+    if (!this.fired) {
+      this.fired = true;
+      key.unbind("w, a, s, d, q, e, g, space");
+      this.bomb_path = [];
 
-    let counter = 0;
-    let x;
-    let y;
-    const increase = this.aim_angle / 180 * Math.PI / 40;
+      let counter = 0;
+      let x;
+      let y;
+      const increase = this.aim_angle / 180 * Math.PI / 40;
 
-    if (this.facing === "right") {
-      for (let i = 0; i <= 2160; i += 5) {
+      if (this.facing === "right") {
+        for (let i = 0; i <= 2160; i += 5) {
 
-        x = this.pos[0] + 50 + i;
+          x = this.pos[0] + 50 + i;
 
-        y = this.pos[1] + 50 - Math.sin(counter) * 290;
-        counter += increase;
+          y = this.pos[1] + 50 - Math.sin(counter) * 290;
+          counter += increase;
 
-        this.bomb_path.push([x, y]);
+          this.bomb_path.push([x, y]);
+        }
+      } else {
+        for (let i = 0; i <= 2160; i += 5) {
+
+          x = this.pos[0] + 50 - i;
+
+          y = this.pos[1] + 50 - Math.sin(counter) * 290;
+          counter += increase;
+
+          this.bomb_path.push([x, y]);
+        }
       }
-    } else {
-      for (let i = 0; i <= 2160; i += 5) {
 
-        x = this.pos[0] + 50 - i;
+      this.bomb = new Bomb({
+        pos: this.bomb_path[0],
+        game: this.game,
+        ship: this,
+        bomb_path: this.bomb_path
+      });
 
-        y = this.pos[1] + 50 - Math.sin(counter) * 290;
-        counter += increase;
-
-        this.bomb_path.push([x, y]);
-      }
+      this.game.addBomb(this.bomb);
     }
-
-    this.bomb = new Bomb({
-      pos: this.bomb_path[0],
-      game: this.game,
-      ship: this,
-      bomb_path: this.bomb_path
-    });
-
-    this.game.addBomb(this.bomb);
   };
 
   move(move) {
