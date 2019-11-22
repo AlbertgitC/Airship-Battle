@@ -24,17 +24,17 @@ class Explosion {
       width = 50;
       height = 50;
       resize = [50, 50];
-      this.explode_image.src = "../src/assets/explode1.png";
+      this.explode_image.src = "./src/assets/explode1.png";
     } else if (this.object instanceof Rock) {
       width = 120;
       height = 120;
       resize = [230, 230];
-      this.explode_image.src = "../src/assets/rock_down.png";
+      this.explode_image.src = "./src/assets/rock_down.png";
     } else if (this.object instanceof Airship) {
       width = 64;
       height = 64;
       resize = [150, 150];
-      this.explode_image.src = "../src/assets/explode2.png";
+      this.explode_image.src = "./src/assets/explode2.png";
     }
 
     let sprite_x;

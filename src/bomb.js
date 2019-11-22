@@ -6,7 +6,7 @@ class Bomb {
     this.sprite_x_start = 0;
     this.sprite_y_start = 0;
     this.bomb_image = new Image();
-    this.bomb_image.src = "../src/assets/torpedo.png";
+    this.bomb_image.src = "./src/assets/torpedo.png";
     this.pos = props.pos;
     this.game = props.game;
     this.ship = props.ship;

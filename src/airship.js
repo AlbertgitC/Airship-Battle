@@ -11,7 +11,7 @@ class Airship {
     this.sprite_x_start = props.sprite_x_start;
     this.sprite_y_start = props.sprite_y_start;
     this.ship_image = new Image();
-    this.ship_image.src = "../src/assets/zeplin.png";
+    this.ship_image.src = "./src/assets/zeplin.png";
     this.aim_angle = 0;
     this.aim_mode = false;
     this.facing = props.facing;

@@ -4,7 +4,7 @@ class Cloud {
     this.game = props.game;
     this.x_vel = props.x_vel;
     this.cloud_img = new Image();
-    this.cloud_img.src = "../src/assets/background/clouds.png";
+    this.cloud_img.src = "./src/assets/background/clouds.png";
   }
 
   move() {

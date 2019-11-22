@@ -6,7 +6,7 @@ class Rock {
     this.sprite_x_start = props.sprite_x_start;
     this.sprite_y_start = 0;
     this.rock_image = new Image();
-    this.rock_image.src = "../src/assets/rocks.png";
+    this.rock_image.src = "./src/assets/rocks.png";
     this.pos = props.pos;
     this.game = props.game;
     this.radius = props.radius;
