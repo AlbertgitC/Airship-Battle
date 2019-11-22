@@ -14,7 +14,7 @@ class Game {
     this.curFrameCount = 0;
     this.curFrame = 0;
     this.hp_bar_image = new Image();
-    this.hp_bar_image.src = "./src/assets/hp_bar.png";
+    this.hp_bar_image.src = "./src/assets/hp_bar2.png";
     this.current_ship_image = new Image();
     this.current_ship_image.src = "./src/assets/current_player.png";
     this.selected_ship;
