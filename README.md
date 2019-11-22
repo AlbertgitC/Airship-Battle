@@ -1,6 +1,6 @@
 # Airship Battle
 
-Link: 
+Link: https://albertgitc.github.io/Airship-Battle/
 
 ### Overview
 Airship Battle is a 2 players game base on classic Tank Battle game. Players take turn fire cannon with desired trajectory. If it hits other player, it depletes player's hit point. When one player's hit point reach 0, game's over.
