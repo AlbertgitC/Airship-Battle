@@ -6,30 +6,30 @@ class Bomb {
     this.sprite_x_start = 0;
     this.sprite_y_start = 0;
     this.bomb_image = new Image();
-    this.bomb_image.src = "../src/assets/bomb.png";
+    this.bomb_image.src = "../src/assets/torpedo.png";
     this.pos = props.pos;
     this.game = props.game;
     this.ship = props.ship;
     this.bomb_path = props.bomb_path;
     this.step = 0;
-    this.center_pos = [this.pos[0] + 10, this.pos[1] + 10];
+    this.center_pos = [this.pos[0], this.pos[1]];
   }
 
   draw(ctx) {
     this.curFrameCount++;
-    const width = 20;
-    const height = 20;
+    const width = 30;
+    const height = 30;
 
     let sprite_x;
     let sprite_y;
-    if (this.curFrameCount > 8) {
+    if (this.curFrameCount > 1) {
       this.curFrame = ++this.curFrame % this.spriteFrameCount;
       this.curFrameCount = 0;
     }
     sprite_x = this.curFrame * width + this.sprite_x_start;
 
-    if (this.ship.facing === "left") {
-      sprite_y = this.sprite_y_start + 21;
+    if (this.ship.facing === "right") {
+      sprite_y = this.sprite_y_start + 31;
     } else {
       sprite_y = this.sprite_y_start;
     }
@@ -58,10 +58,10 @@ class Bomb {
       sprite_y,
       width,
       height,
-      this.pos[0],
-      this.pos[1],
-      width,
-      height
+      this.pos[0] - 19,
+      this.pos[1] - 17,
+      40,
+      40
     );
 
     // this.drawHitBox(ctx);
@@ -83,7 +83,7 @@ class Bomb {
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'black';
     ctx.beginPath();
-    ctx.arc(this.pos[0] + 10, this.pos[1] + 10, 5, 0, 2 * Math.PI);
+    ctx.arc(this.pos[0], this.pos[1], 8, 0, 2 * Math.PI);
     ctx.stroke();
   }
 }

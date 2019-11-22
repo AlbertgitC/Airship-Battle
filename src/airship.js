@@ -11,7 +11,7 @@ class Airship {
     this.sprite_x_start = props.sprite_x_start;
     this.sprite_y_start = props.sprite_y_start;
     this.ship_image = new Image();
-    this.ship_image.src = "../src/assets/ships.png";
+    this.ship_image.src = "../src/assets/zeplin.png";
     this.aim_angle = 0;
     this.aim_mode = false;
     this.facing = props.facing;
@@ -25,8 +25,8 @@ class Airship {
 
   draw(ctx) {
     this.curFrameCount++;
-    const width = 22;
-    const height = 22;
+    const width = 120;
+    const height = 120;
 
     let ship_sprite_x;
     let ship_sprite_y;
@@ -45,7 +45,7 @@ class Airship {
     }
 
     if (this.facing === "left") {
-      ship_sprite_y = this.sprite_y_start + 23;
+      ship_sprite_y = this.sprite_y_start + 121;
     } else {
       ship_sprite_y = this.sprite_y_start;
     }
@@ -56,10 +56,10 @@ class Airship {
       ship_sprite_y, 
       width, 
       height, 
-      this.pos[0], 
-      this.pos[1], 
-      100, 
-      100
+      this.pos[0] - 17, 
+      this.pos[1] - 19, 
+      140, 
+      140
     );
 
     // this.drawHitBox(ctx);
@@ -111,7 +111,7 @@ class Airship {
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'black';
     ctx.beginPath();
-    ctx.arc(this.center_pos[0], this.center_pos[1], 38, 0, 2 * Math.PI);
+    ctx.arc(this.center_pos[0], this.center_pos[1], 50, 0, 2 * Math.PI);
     ctx.stroke();
   }
 
@@ -179,7 +179,7 @@ class Airship {
     this.game.rocks.forEach(rock => {
       const pos3 = rock.pos;
       const rock_dist = Math.pow(Math.pow(pos1[0] - pos3[0], 2) + Math.pow(pos1[1] - pos3[1], 2), 0.5);
-      if (rock_dist <= 38 + rock.radius) {
+      if (rock_dist <= 50 + rock.radius) {
         if (this.center_pos[0] < pos3[0] && this.center_pos[1] <= pos3[1]) {
           this.pos = [this.pos[0], this.pos[1] - 4];
         } else if (this.center_pos[0] >= pos3[0] && this.center_pos[1] < pos3[1]) {

@@ -21,7 +21,7 @@ class GameView {
 
       const ship_dist = Math.pow(Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2), 0.5);
 
-      if (ship_dist <= 5 + 38) {
+      if (ship_dist <= 5 + 50) {
         this.game.remove(this.game.selected_ship.bomb);
         this.game.addExplosion(this.game.selected_ship.bomb);
         this.game.selected_ship.bomb = null;
@@ -29,11 +29,17 @@ class GameView {
           this.ships[1].hp--;
           if (this.ships[1].hp === 0) {
             this.game.addExplosion(this.ships[1]);
+            document.getElementById("game-over-menu").firstElementChild.innerHTML = "Player 1 Won!";
+            document.getElementById("game-over-menu").style.display = "flex";
+            key.unbind("w, a, s, d, q, e, g, space");
           }
         } else if (this.game.selected_ship.name === "ship2") {
           this.ships[0].hp--;
           if (this.ships[0].hp === 0) {
             this.game.addExplosion(this.ships[0]);
+            document.getElementById("game-over-menu").firstElementChild.innerHTML = "Player 2 Won!";
+            document.getElementById("game-over-menu").style.display = "flex";
+            key.unbind("w, a, s, d, q, e, g, space");
           }
         }
         return true;
@@ -60,7 +66,6 @@ class GameView {
   }
 
   start() {
-    this.game.bindKeyHandlers();
     this.cloud = this.game.addBackground();
     this.lastTime = 0;
     // start the animation

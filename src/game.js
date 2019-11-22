@@ -54,7 +54,7 @@ class Game {
       pos: [1670, 360],
       game: this,
       sprite_x_start: 0,
-      sprite_y_start: 45,
+      sprite_y_start: 241,
       facing: "left",
       selected: false
     });
