@@ -54,6 +54,8 @@ table {
   flex-direction: column;
   align-items: center;
   font-family: 'VT323', monospace;
+  width: 100%;
+  height: 100%;
 }
 
 .overlay-content {
@@ -99,9 +101,9 @@ table {
 }
 
 .header {
-  width: 1830px;
-  height: 124px;
+  width: 95%;
   background-image: url("../src/assets/wood_border.png");
+  background-size: 100% 100%;
   margin: 8px 0;
   display: flex;
   justify-content: space-around;
